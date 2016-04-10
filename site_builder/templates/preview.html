@@ -1,0 +1,8 @@
+{{ content }}
+{% load static %}
+<script src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
+<div id="pp"></div>
+
+<script>
+    $("#pp").html('{{ content }}')
+</script>
