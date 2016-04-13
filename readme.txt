@@ -1,5 +1,5 @@
 - Second Version
-	I added new themes/templates into site builder site
+	I added new themes/templates into site builder site.
 	You can see the new theme images in 'new theme images' folder.
 	I added new themes in Headers, Content Sections, Portfolios, Team, Pricing Tables, Contact and Footers.
 
