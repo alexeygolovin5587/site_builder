@@ -14,6 +14,7 @@ var editableItems = new Array();
 
 editableItems['.frameCover'] = [];
 editableItems['span.fa'] = ['color', 'font-size'];
+editableItems['i.fa'] = ['color', 'font-size'];
 editableItems['.bg.bg1'] = ['background-color'];
 editableItems['nav a, a.edit'] = ['color', 'font-weight', 'text-transform'];
 editableItems['h1'] = ['color', 'font-size', 'background-color', 'font-family'];
@@ -43,7 +44,7 @@ editableItemOptions['h3 : font-family'] = ['default', 'Lato', 'Helvetica', 'Aria
 editableItemOptions['p : font-family'] = ['default', 'Lato', 'Helvetica', 'Arial', 'Times New Roman'];
 
 
-var editableContent = ['.editContent', '.navbar a', 'button', 'a.btn', '.footer a:not(.fa)', '.tableWrapper'];
+var editableContent = ['.editContent', '.navbar a', 'button', 'a.btn', '.footer a:not(.fa)', '.tableWrapper', '.solid-footer', '.solid-content p', '.solid-content h4', '.solid-content h5', '.solid-content h3', '.solid-content h1'];
 
 
 /* FLAT UI PRO INITS */
@@ -373,12 +374,12 @@ function makeSortable(el) {
 		handle: ".frameCover",
 		beforeStop: function(event, ui){
 
-
 			if( ui.item.find('.frameCover').size() == 0 ) {
 
 				if( ui.item.find('iframe').size() > 0 ) {//iframe thumbnails
 
 					theHeight = ui.item.height();
+
 
 					var attr = ui.item.find('iframe').attr('data-sandbox');
 
@@ -440,7 +441,7 @@ function makeSortable(el) {
 
 					ui.item.find('iframe').uniqueId();
 					ui.item.find('iframe').height(theHeight+"px");
-					ui.item.find('iframe').css('background', '#ffffff url(images/loading.gif) 50% 50% no-repeat');
+					ui.item.find('iframe').css('background', '#ffffff url(/static/images/loading.gif) 50% 50% no-repeat');
 
 					ui.item.find('iframe').load(function(){
 
