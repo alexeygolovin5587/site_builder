@@ -20,5 +20,7 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'preview/', views.preview, name='preview'),
     url(r'iupload/', views.iupload, name='iupload'),
-    url(r'save/', views.save_html, name='save')
+    url(r'save/', views.save_html, name='save'),
+    url(r'addTheme/', views.add_themes, name='add-themes'),
+    url(r'deleteTheme/', views.delete_themes, name='delete-themes')
 ]

@@ -1,3 +1,29 @@
+- Third Version
+    I try to show proof of concept of loading new themes.
+    I think I can add new features in the future task.
+
+    You can see 'Add new themes' in top bar.
+    When you click it, the program shows pop up dialog with list of themes that are applied now and two file input field for adding new themes.
+
+    1. Adding new themes
+    You must fill two fields for this;
+        New Theme Html: This is field for selecting theme html file.
+                        The html file must be in 'site_builder/static/elements/' in project.
+        New Theme Image: This is field for selecting thumbnail image of new theme.
+                        The html file must be in 'site_builder/static/elements/images/thumbs/' in project.
+
+    2. Deleting themes
+    You can see 'delete' button for each theme in the list.
+    You can simply click 'delete' button and refresh the page manually for deleting new themes.
+
+    3. Prerequest
+        I already configured for themes you gave me. So you don't have to do following things now.
+
+        - You must copy theme html file in 'site_builder/static/static/elements/' directory and thumbnail image file in 'site_builder/static/static/elements/' directory.
+        - Also, you should copy resource files(like css and js) into the project('site_builder\static\js', 'site_builder\static\css')
+        - You have configure url for javascript, css and image files in theme html, css and js.
+
+
 - Second Version
 	I added new themes/templates into site builder site.
 	You can see the new theme images in 'new theme images' folder.
