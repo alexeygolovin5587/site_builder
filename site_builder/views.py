@@ -22,7 +22,7 @@ from django.shortcuts import redirect
 
 
 def index(request):
-    new_themes = NewTheme.objects.all()
+    new_themes = Module.objects.filter(added=1)
 
     themes = []
     elements = {"elements": {
@@ -97,23 +97,29 @@ def index(request):
         }
     }
 
+    master_name = ""
     for theme in new_themes:
         temp = dict()
-        temp['url'] = theme.url
-        temp['height'] = 700
-        temp['thumbnail'] = theme.thumbnail
 
+        temp['id'] = theme.id
+        temp['height'] = 700
+        temp['url'] = theme.master.html_path + theme.url
+        temp['thumbnail'] = theme.master.img_path + theme.thumbnail
+        master_name = theme.master.name
         themes.append(temp)
 
     with open(settings.BASE_DIR + '/site_builder/' + settings.STATIC_URL + 'elements.json', 'wb') as json_file:
         if len(themes) > 0:
-            elements['elements']['New Themes'] = themes
+            elements['elements'][master_name] = themes
 
         res_str = "var _Elements = " + json.dumps(elements)
         print res_str
         json_file.write(res_str)
 
     v = random.randint(1, 100)
+
+    addable_themes = Module.objects.filter(added=0)
+
     return render_to_response('index.html', locals(), context_instance=RequestContext(request))
 
 
@@ -127,26 +133,36 @@ def preview(request):
 
 @csrf_exempt
 def add_themes(request):
-    html_name = request.POST['html']
-    image_name = request.POST['image']
+    id = request.POST['theme']
 
-    theme = NewTheme()
-    theme.url = '/static/elements/' + html_name
-    theme.thumbnail = "/static/elements/images/thumbs/" + image_name
+    theme = Module.objects.filter(id=id)[0]
 
+    theme.added = 1
     theme.save()
 
     return redirect('/')
 
 @csrf_exempt
 def delete_themes(request):
-    html_name = request.POST['html']
-    image_name = request.POST['image']
+    id= int(request.POST['id'])
 
-    theme = NewTheme.objects.filter(url=html_name, thumbnail=image_name)
-    theme.delete()
+    theme = Module.objects.filter(id=id)[0]
 
-    return HttpResponse("")
+    theme.added = 0
+    theme.save()
+
+    new_themes = Module.objects.filter(added=0)
+
+    themes = []
+    for theme in new_themes:
+        temp = dict()
+
+        temp['id'] = theme.id
+        temp['name'] = theme.name
+
+        themes.append(temp)
+
+    return HttpResponse(json.dumps(themes))
 
 @csrf_exempt
 def iupload(request):
@@ -175,35 +191,6 @@ def iupload(request):
 @csrf_exempt
 def save_html(request):
     res = request
-    assets_dir = settings.BASE_DIR + '/site_builder/' + settings.STATIC_URL + 'elements/'
-
-    filenames = get_filepaths(assets_dir)
-
-    # Folder name in ZIP archive which contains the above files
-    # E.g [thearchive.zip]/somefiles/file2.txt
-    # FIXME: Set this to something better
-    zip_subdir = "somefiles"
-    zip_filename = "%s.zip" % zip_subdir
-
-    # Open StringIO to grab in-memory ZIP contents
-    s = StringIO.StringIO()
-
-    # The zip compressor
-    zf = zipfile.ZipFile(s, "w")
-
-
-    req = request
-
-    for fpath in filenames:
-        # Calculate path for file in zip
-        fdir, fname = os.path.split(fpath)
-
-        # Get relative path
-        relative_path = fdir.split('//')[1]
-        zip_path = os.path.join(relative_path, fname)
-
-        # Add file, at correct path
-        zf.write(fpath, zip_path)
 
     for page in request.POST:
         if 'pages' in page:
@@ -221,17 +208,8 @@ def save_html(request):
             html_obj.content = content
             html_obj.save()
 
-            zf.writestr(file_name, content)
 
-    zf.close()
-
-    # Grab ZIP file from in-memory, make response with correct MIME-type
-    resp = HttpResponse(s.getvalue(), content_type = "application/x-zip-compressed")
-    # ..and correct content-disposition
-    resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
-
-    return resp
-
+    return HttpResponse(content)
 
 def get_filepaths(directory):
     file_paths = []  # List which will store all of the full filepaths.

@@ -2137,6 +2137,7 @@
                                 <tbody>
                                     {% for theme in new_themes %}
                                     <tr>
+                                        <input type="hidden" value="{{ theme.id }}"/>
                                         <td>{{ theme.url }}</td>
                                         <td>{{ theme.thumbnail }}</td>
                                         <td><a href="javascript:void(0)" class="btn btn-danger btn-embossed pull-right actionButtons" onclick="deleteTheme(this)"><span class="fui-search"></span> <span class="bLabel">Delete</span></a></td>
@@ -2160,26 +2161,30 @@
 
         <form role="form" method="post" action="{% url 'add-themes' %}">
 
+
             <div class="row">
                 <div class="col-md-4">
-                    New Theme Html:
+                   Select Theme:
+                </div>
+                <div class="col-md-4" id="select_part">
+                    {% if addable_themes|length > 0 %}
+                    <select name="theme" style="width: 200px;">
+                        {% for theme in addable_themes %}
+                          <option value="{{ theme.id }}">{{ theme.name }}</option>
+                        {% endfor %}
+                    </select>
+                    {% else %}
+                        No more theme can be added.
+                    {% endif %}
                 </div>
                 <div class="col-md-4">
-                    <input type="file" name="html" accept=".html, .htm" required/>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    New Theme Image:
-                </div>
-                <div class="col-md-4">
-                    <input type="file" name="image"  accept="image/x-png, image/gif, image/jpeg" required/>
+                    <button type="submit" class="btn btn-primary btn-embossed btn-lg btn-wide">Add</button>
                 </div>
             </div>
 
             <hr>
 
-            <button type="submit" class="btn btn-primary btn-embossed btn-lg btn-wide">Add new theme</button>
+
 
         </form>
 
@@ -2243,14 +2248,21 @@
         {
             $(obj).parent().parent().remove();
 
-            html_name = $(obj).parent().prev().prev().html();
-            image_name = $(obj).parent().prev().html();
+            id = $(obj).parent().prev().prev().prev().val();
 
             $.ajax({
                 type: "POST",
                 url:  '{% url "delete-themes" %}',
-                data: {"html":html_name, "image":image_name},
+                data: {"id":id},
+                dataType: 'json',
                 success: function (data) {
+                    str = '<select name="theme" style="width: 200px;">'
+                    $.each(data, function(index, element) {
+                        str = str + '<option value="' + element.id + '">' + element.name + '</option>';
+                    });
+                    str = str + '</select>'
+
+                    $('#select_part').html(str);
                 },
                 error: function (x, e) {
 

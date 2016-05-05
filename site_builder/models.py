@@ -10,8 +10,21 @@ class Html(models.Model):
     class Meta:
         db_table = 'tbl_html'
 
-class NewTheme(models.Model):
+class MasterTemplate(models.Model):
+    name = models.CharField(max_length=255)
+    img_path = models.CharField(max_length=255)
+    html_path = models.CharField(max_length=255)
+    class Meta:
+        db_table = 'tbl_master'
+
+class Module(models.Model):
+    name = models.CharField(max_length=255)
     url = models.CharField(max_length=255)
     thumbnail = models.CharField(max_length=255)
+    content = models.TextField(default="")
+
+    added = models.BooleanField(default=False)
+
+    master = models.ForeignKey(MasterTemplate, default=1)
     class Meta:
-        db_table = 'tbl_theme'
+        db_table = 'tbl_module'
