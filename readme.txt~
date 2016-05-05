@@ -1,20 +1,17 @@
-- Third Version
+- Third Version (add new theme easily)
     I try to show proof of concept of loading new themes.
     I think I can add new features in the future task.
 
     You can see 'Add new themes' in top bar.
-    When you click it, the program shows pop dialog with list of themes that are applied now and two file input field for adding new themes.
+    When you click it, the program shows dialog with list of themes that are applied now and two file input field for adding new themes.
 
     1. Adding new themes
-    You must fill two fields for this;
-        New Theme Html: This is field for selecting theme html file.
-                        The html file must be in 'site_builder/static/elements/' in project.
-        New Theme Image: This is field for selecting thumbnail image of new theme.
-                        The html file must be in 'site_builder/static/elements/images/thumbs/' in project.
+    You can select one of themes in the list and press add 'button'.
+	After that you can see a new theme in solid menu in left side menu bar.
 
     2. Deleting themes
     You can see 'delete' button for each theme in the list.
-    You can simply click 'delete' button and refresh the page manually for deleting new themes.
+    You can simply click 'delete' button and refresh the page manually.
 
     3. Prerequest
         I already configured for themes you gave me. So you don't have to do following things now.

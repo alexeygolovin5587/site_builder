@@ -1,4 +1,4 @@
-- Third Version (add new theme in web app)
+- Third Version (add new theme easily)
     I try to show proof of concept of loading new themes.
     I think I can add new features in the future task.
 
